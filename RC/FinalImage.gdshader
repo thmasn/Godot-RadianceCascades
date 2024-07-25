@@ -63,6 +63,7 @@ vec4 mainImage(vec2 fragCoord) {
 	//fragColor.xy = vec2(q)/256.;
     //fragColor = sampleDrawing(iChannel1, fragCoord);
     //fragColor.x /=256.;
+	fragColor = cascadeFetch(iChannel0, 0, q + h.yy, 0);
 	return fragColor;
 }
 

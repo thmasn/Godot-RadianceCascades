@@ -40,19 +40,15 @@ vec4 cubemapFetch(sampler2D sampler, int face, ivec2 P) {
 	}*/
 	
 	//return texture(sampler, normalize(c));
-	return texture(sampler, vec2(float(P.x), float(P.y))/1024.);//TODO: not fixed resolution
+	return textureLod(sampler, vec2(float(P.x)+.5, float(P.y)+.5)/1024.,0);//TODO: not fixed resolution
 }
 
 //vec4 cascadeFetch(samplerCube cascadeTex, int n, ivec2 p, int d) {
 vec4 cascadeFetch(sampler2D cascadeTex, int n, ivec2 p, int d) {
     // Look up the radiance interval at position p in direction d of cascade n
     ivec2 cubemapRes = ivec2(1024,1024);
-	if(n== 0) p.x += 0;
-	if (n == 1) p.x += 40;
-	if(n==2) p.x += 16;
-	if(n==3) p.x += 0;
     int cn_offset = n > 0
-        ? (c_sRes.x * c_sRes.y) + (c_sRes.x * c_sRes.y * c_dRes * (n - 1)) / 4
+        ? c_sRes.x * c_sRes.y + (c_sRes.x * c_sRes.y * c_dRes * (n - 1)) / 4
         : 0;
     int cn_dRes = n == 0 ? 1 : c_dRes << 2 * (n - 1);
     ivec2 cn_sRes = c_sRes >> n;
@@ -62,7 +58,8 @@ vec4 cascadeFetch(sampler2D cascadeTex, int n, ivec2 p, int d) {
     i /= cubemapRes.x;
     int y = i % cubemapRes.y;
     i /= cubemapRes.y;
-	return cubemapFetch(cascadeTex, i, ivec2(x, y));
+	//debugging return vec4(vec2(float(x)/1024.,float(y)/64.), 0., 1.);
+    return cubemapFetch(cascadeTex, i, ivec2(x, y));
 }
 
 const int KEY_SPACE = 32;

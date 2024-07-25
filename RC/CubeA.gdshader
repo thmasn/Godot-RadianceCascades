@@ -219,9 +219,9 @@ vec4 main(vec2 fragCoord){
         }
         
         s += si;
-		//ro = fragCoord.xy;
 		//debugging if ro works
-    	//s = sampleDrawing(iChannel1, ro);
+		//ro = fragCoord.xy;
+    	s = sampleDrawing(iChannel1, ro);
     }
     
     s /= float(nDirs / cn_dRes);

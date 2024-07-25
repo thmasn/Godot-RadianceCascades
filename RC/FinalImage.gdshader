@@ -45,10 +45,10 @@ vec4 mainImage(vec2 fragCoord) {
 	vec4 fragColor;
 	
 	vec2 iResolution = screenRes;
-    ivec2 cubemapRes = ivec2(1024,1024);//TODO: textureSize(iChannel0, 0);
-    vec2 p = fragCoord / iResolution.xy * vec2(c_sRes); //range 0..c_sRes
-    ivec2 q = ivec2(round(p)) - 1; //coord of radiance sample
-    vec2 w = p - vec2(q) - 0.5; //pos in radiance sample
+    ivec2 cubemapRes = textureSize(iChannel0, 0);
+    vec2 p = fragCoord / iResolution.xy * vec2(c_sRes);
+    ivec2 q = ivec2(round(p)) - 1;
+    vec2 w = p - vec2(q) - 0.5;
     ivec2 h = ivec2(1, 0);
     vec4 S0 = cascadeFetch(iChannel0, 0, q + h.yy, 0);
     vec4 S1 = cascadeFetch(iChannel0, 0, q + h.xy, 0);
@@ -60,6 +60,7 @@ vec4 mainImage(vec2 fragCoord) {
     //TODO: readd fluence = mix(fluence, data.gba * 2.0 * PI, clamp(3.0 - data.r, 0.0, 1.0));
     // Tonemap
     fragColor = vec4(1.0 - 1.0 / pow(1.0 + fluence, vec3(2.5)), 1.0);
+	//fragColor.xy = vec2(q)/256.;
     //fragColor = sampleDrawing(iChannel1, fragCoord);
     //fragColor.x /=256.;
 	return fragColor;

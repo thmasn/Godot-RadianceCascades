@@ -74,6 +74,7 @@ texture = SubResource("ViewportTexture_3tl8m")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 544)
+scale = Vector2(1, -1)
 texture = SubResource("ViewportTexture_b66n5")
 
 [node name="finalImage" type="SubViewport" parent="."]

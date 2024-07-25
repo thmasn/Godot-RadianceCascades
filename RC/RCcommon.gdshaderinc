@@ -20,14 +20,14 @@ const float MAGIC = 1e25;
 
 const vec2 screenRes = vec2(1024, 576); //TODO: fixme!
 
-/*vec4 cubemapFetch(sampler2D sampler, int face, ivec2 P) {
+vec4 cubemapFetch(sampler2D sampler, int face, ivec2 P) {
 	// Look up a single texel in a cubemap
 	ivec2 cubemapRes = textureSize(sampler, 0);
 	if (clamp(P, ivec2(0), cubemapRes - 1) != P || face < 0 || face > 5) {
-		return vec4(1.0);
+		return vec4(0.0);
 	}
 
-	vec2 p = (vec2(P) + 0.5) / vec2(cubemapRes) * 2.0 - 1.0;
+	/*vec2 p = (vec2(P) + 0.5) / vec2(cubemapRes) * 2.0 - 1.0;
 	vec3 c;
 	
 	switch (face) {
@@ -37,11 +37,11 @@ const vec2 screenRes = vec2(1024, 576); //TODO: fixme!
 		case 3: c = vec3( p.x, -1.0, -p.y); break;
 		case 4: c = vec3( p.x, -p.y,  1.0); break;
 		case 5: c = vec3(-p.x, -p.y, -1.0); break;
-	}
+	}*/
 	
 	//return texture(sampler, normalize(c));
-	return texture(sampler, vec2(float(P.x), float(P.y))/1024.); //TODO: actual texture size
-}*/
+	return texture(sampler, vec2(float(P.x), float(P.y))/1024.);//TODO: not fixed resolution
+}
 
 //vec4 cascadeFetch(samplerCube cascadeTex, int n, ivec2 p, int d) {
 vec4 cascadeFetch(sampler2D cascadeTex, int n, ivec2 p, int d) {
@@ -62,9 +62,7 @@ vec4 cascadeFetch(sampler2D cascadeTex, int n, ivec2 p, int d) {
     i /= cubemapRes.x;
     int y = i % cubemapRes.y;
     i /= cubemapRes.y;
-	//return cubemapFetch(cascadeTex, i, ivec2(x, y));
-	if(n > 0 )return vec4(0.);
-	return texture(cascadeTex, vec2(float(x), float(y))/1024.);//TODO: not fixed resolution
+	return cubemapFetch(cascadeTex, i, ivec2(x, y));
 }
 
 const int KEY_SPACE = 32;
@@ -106,6 +104,7 @@ float sdSegment(vec2 p, vec2 a, vec2 b) {
 
 vec4 sampleDrawing(sampler2D drawingTex, vec2 P) {
 	// Return the drawing (in the format listed at the top of Buffer B) at P
+	P.y = float(textureSize(drawingTex,0).y)-P.y;
 	vec4 data = texture(drawingTex, P / vec2(textureSize(drawingTex, 0)));
 	data.a = 0.; //because alpha is not imported by godot or exported by shadertoy
 	/*if (keyToggled(KEY_1) && iMouse.z > 0.0) {

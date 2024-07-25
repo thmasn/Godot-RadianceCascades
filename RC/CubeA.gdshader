@@ -86,7 +86,6 @@ RayHit radiance(vec2 ro, vec2 rd, float tMax) {
     return RayHit(vec4(p.gba, 0.0), t);
 }
 
-
 vec3 integrateSkyRadiance_(vec2 angle) {
     // Sky radiance helper function
     float a1 = angle[1];
@@ -123,6 +122,7 @@ float smoothDist(int cascadeIndex)
 }
 
 vec4 main(vec2 fragCoord){
+	vec4 fragColor;
     // Calculate the index for this cubemap texel
     int face;
     
@@ -139,13 +139,13 @@ vec4 main(vec2 fragCoord){
     int i =
         int(fragCoord.x) + int(iResolution.x) *
         (int(fragCoord.y) + int(iResolution.y) * face);
-    // Figure out which cascade this pixel is in	
+    // Figure out which cascade this pixel is in
     int c_size =
         c_sRes.x * c_sRes.y +
         c_sRes.x * c_sRes.y * c_dRes * (nCascades - 1) / 4;    
     
-   	if (i >= c_size) {
-        return vec4(0.); //TODO: what does an empty return do?
+    if (i >= c_size) {//outside of cascade region
+        return vec4(0.);
     }
     
     int n = i < c_sRes.x * c_sRes.y ? 0 : int(
@@ -195,10 +195,10 @@ vec4 main(vec2 fragCoord){
         vec4 si = hit.radiance;
         // If the visibility term is non-zero
         if (si.a != 0.0) {
-            if (n == nCascades - 1) {
+            /*if (n == nCascades - 1) {
                 // If we are the top-level cascade, then there's no other
                 // cascade to merge with, so instead merge with the sky radiance
-                vec2 angle = vec2(float(j), float(j+1)) / float(nDirs) * 2.0 * PI;
+                vec2 angle = vec2(float(j), float(j + 1)) / float(nDirs) * 2.0 * PI;
                 si.rgb += 0.0f*integrateSkyRadiance(angle) / (angle.y - angle.x);
             } else {
                 // Otherwise, find the radiance coming from the above cascade in
@@ -214,14 +214,30 @@ vec4 main(vec2 fragCoord){
                 vec4 S = mix(mix(S0, S1, w.x), mix(S2, S3, w.x), w.y);
                 si.rgb += si.a * S.rgb;
                 si.a *= S.a; //alpha does not seem to matter at all
-            }
+                si.a *= S.a;
+            }*/
         }
         
         s += si;
+		//ro = fragCoord.xy;
+		//debugging if ro works
+    	//s = sampleDrawing(iChannel1, ro);
     }
     
     s /= float(nDirs / cn_dRes);
-    return s;
+    fragColor = s;
+	
+    //debug things
+    //fragColor = radiance(vec2(fragCoord.xy), vec2(10.,10.), 1024.).radiance;//check ray math
+    //fragColor.b = fragCoord.y/1024.;
+    //fragColor.xy = ro/1000.;
+    //if (fragColor.x>.75) fragColor.x = 0.;
+    //fragColor = sampleDrawing(iChannel1, fragCoord.xy);
+    //fragColor = vec4(vec2(ro)/1000.,0.,1.);
+    //float ifloat = float(i);
+    //i is ok fragColor = vec4(ifloat/100000., ifloat/1000000., ifloat/10000000., 1.);
+    //debug uv consistency fragColor = vec4(fragCoord.xy/1024.,fragCoord.y > 512.?1.:0.,1.);
+    return fragColor;
 }
 
 void fragment() {

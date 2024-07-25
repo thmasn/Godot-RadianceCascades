@@ -57,13 +57,12 @@ vec4 mainImage(vec2 fragCoord) {
     vec3 fluence = mix(mix(S0, S1, w.x), mix(S2, S3, w.x), w.y).rgb * 2.0 * PI;
     // Overlay actual SDF drawing to fix low resolution edges
     vec4 data = sampleDrawing(iChannel1, fragCoord);
-    //TODO: readd fluence = mix(fluence, data.gba * 2.0 * PI, clamp(3.0 - data.r, 0.0, 1.0));
+    fluence = mix(fluence, data.gba * 2.0 * PI, clamp(3.0 - data.r, 0.0, 1.0));
     // Tonemap
     fragColor = vec4(1.0 - 1.0 / pow(1.0 + fluence, vec3(2.5)), 1.0);
 	//fragColor.xy = vec2(q)/256.;
     //fragColor = sampleDrawing(iChannel1, fragCoord);
     //fragColor.x /=256.;
-	fragColor = cascadeFetch(iChannel0, 0, q + h.yy, 0);
 	return fragColor;
 }
 

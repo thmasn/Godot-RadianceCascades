@@ -195,7 +195,7 @@ vec4 main(vec2 fragCoord){
         vec4 si = hit.radiance;
         // If the visibility term is non-zero
         if (si.a != 0.0) {
-            /*if (n == nCascades - 1) {
+        	if (n == nCascades - 1) {
                 // If we are the top-level cascade, then there's no other
                 // cascade to merge with, so instead merge with the sky radiance
                 vec2 angle = vec2(float(j), float(j + 1)) / float(nDirs) * 2.0 * PI;
@@ -215,13 +215,13 @@ vec4 main(vec2 fragCoord){
                 si.rgb += si.a * S.rgb;
                 si.a *= S.a; //alpha does not seem to matter at all
                 si.a *= S.a;
-            }*/
+            }
         }
         
         s += si;
 		//debugging if ro works
 		//ro = fragCoord.xy;
-    	s = sampleDrawing(iChannel1, ro);
+    	//s = sampleDrawing(iChannel1, ro);
     }
     
     s /= float(nDirs / cn_dRes);

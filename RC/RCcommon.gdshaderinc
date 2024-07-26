@@ -101,7 +101,6 @@ float sdSegment(vec2 p, vec2 a, vec2 b) {
 
 vec4 sampleDrawing(sampler2D drawingTex, vec2 P) {
 	// Return the drawing (in the format listed at the top of Buffer B) at P
-	P.y = float(textureSize(drawingTex,0).y)-P.y;
 	vec4 data = texture(drawingTex, P / vec2(textureSize(drawingTex, 0)));
 	data.a = 0.; //because alpha is not imported by godot or exported by shadertoy
 	/*if (keyToggled(KEY_1) && iMouse.z > 0.0) {

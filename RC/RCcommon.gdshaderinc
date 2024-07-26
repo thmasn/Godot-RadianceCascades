@@ -20,27 +20,13 @@ const float MAGIC = 1e25;
 
 const vec2 screenRes = vec2(1024, 576); //TODO: fixme!
 
-vec4 cubemapFetch(sampler2D sampler, int face, ivec2 P) {
+vec4 cubemapFetch(sampler2D sampler, ivec2 P) {
 	// Look up a single texel in a cubemap
 	ivec2 cubemapRes = textureSize(sampler, 0);
-	if (clamp(P, ivec2(0), cubemapRes - 1) != P || face < 0 || face > 5) {
+	if (clamp(P, ivec2(0), cubemapRes - 1) != P ) {
 		return vec4(0.0);
 	}
-
-	/*vec2 p = (vec2(P) + 0.5) / vec2(cubemapRes) * 2.0 - 1.0;
-	vec3 c;
-	
-	switch (face) {
-		case 0: c = vec3( 1.0, -p.y, -p.x); break;
-		case 1: c = vec3(-1.0, -p.y,  p.x); break;
-		case 2: c = vec3( p.x,  1.0,  p.y); break;
-		case 3: c = vec3( p.x, -1.0, -p.y); break;
-		case 4: c = vec3( p.x, -p.y,  1.0); break;
-		case 5: c = vec3(-p.x, -p.y, -1.0); break;
-	}*/
-	
-	//return texture(sampler, normalize(c));
-	return textureLod(sampler, vec2(float(P.x)+.5, float(P.y)+.5)/1024.,0);//TODO: not fixed resolution
+	return textureLod(sampler, (vec2(P)+.5)/vec2(cubemapRes),0);
 }
 
 //vec4 cascadeFetch(samplerCube cascadeTex, int n, ivec2 p, int d) {
@@ -59,59 +45,13 @@ vec4 cascadeFetch(sampler2D cascadeTex, int n, ivec2 p, int d) {
     int y = i % cubemapRes.y;
     i /= cubemapRes.y;
 	//debugging return vec4(vec2(float(x)/1024.,float(y)/64.), 0., 1.);
-    return cubemapFetch(cascadeTex, i, ivec2(x, y));
-}
-
-const int KEY_SPACE = 32;
-const int KEY_1 = 49;
-
-/*#ifndef HW_PERFORMANCE
-uniform vec4 iMouse;
-uniform sampler2D iChannel2;
-#endif*/
-
-/*bool keyToggled(int keyCode) {
-	return texelFetch(iChannel2, ivec2(keyCode, 2), 0).r > 0.0;
-}*/
-
-vec3 hsv2rgb(vec3 c) {
-	vec3 rgb = clamp(
-		abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0,
-		0.0,
-		1.0
-	);
-	return c.z * mix(vec3(1.0), rgb, c.y);
-}
-
-/*vec3 getEmissivity() {
-	return !keyToggled(KEY_SPACE)
-		? pow(hsv2rgb(vec3(TIME * 0.2, 1.0, 0.8)), vec3(2.2))
-		: vec3(0.0);
-}*/
-
-float sdCircle(vec2 p, vec2 c, float r) {
-	return distance(p, c) - r;
-}
-
-float sdSegment(vec2 p, vec2 a, vec2 b) {
-	vec2 ap = p - a;
-	vec2 ab = b - a;
-	return distance(ap, ab * clamp(dot(ap, ab) / dot(ab, ab), 0.0, 1.0));
+    return cubemapFetch(cascadeTex, ivec2(x, y));
 }
 
 vec4 sampleDrawing(sampler2D drawingTex, vec2 P) {
 	// Return the drawing (in the format listed at the top of Buffer B) at P
 	vec4 data = texture(drawingTex, P / vec2(textureSize(drawingTex, 0)));
 	data.a = 0.; //because alpha is not imported by godot or exported by shadertoy
-	/*if (keyToggled(KEY_1) && iMouse.z > 0.0) {
-		float radius = brushRadius * screenRes.y;
-		//float sd = sdCircle(P, iMouse.xy + 0.5, radius);
-		float sd = sdSegment(P, abs(iMouse.zw) + 0.5, iMouse.xy + 0.5) - radius;
-		
-		if (sd <= max(data.r, 0.0)) {
-			data = vec4(min(sd, data.r), getEmissivity());
-		}
-	}*/
 
 	return data;
 }

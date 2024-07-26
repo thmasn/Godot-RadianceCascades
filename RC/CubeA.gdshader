@@ -124,21 +124,11 @@ float smoothDist(int cascadeIndex)
 vec4 main(vec2 fragCoord){
 	vec4 fragColor;
     // Calculate the index for this cubemap texel
-    int face;
-    
-    /*if (abs(fragRD.x) > abs(fragRD.y) && abs(fragRD.x) > abs(fragRD.z)) {
-        face = fragRD.x > 0.0 ? 0 : 1;
-    } else if (abs(fragRD.y) > abs(fragRD.z)) {
-        face = fragRD.y > 0.0 ? 2 : 3;
-    } else {
-        face = fragRD.z > 0.0 ? 4 : 5;
-    }*/
-	face = 0;
     
 	vec3 iResolution = vec3(1024., 1024., 1.);
     int i =
         int(fragCoord.x) + int(iResolution.x) *
-        (int(fragCoord.y) + int(iResolution.y) * face);
+        (int(fragCoord.y));
     // Figure out which cascade this pixel is in
     int c_size =
         c_sRes.x * c_sRes.y +
@@ -195,6 +185,7 @@ vec4 main(vec2 fragCoord){
         vec4 si = hit.radiance;
         // If the visibility term is non-zero
         if (si.a != 0.0) {
+			//this is the merge with above cascade
         	if (n == nCascades - 1) {
                 // If we are the top-level cascade, then there's no other
                 // cascade to merge with, so instead merge with the sky radiance
@@ -242,7 +233,6 @@ vec4 main(vec2 fragCoord){
 
 void fragment() {
 	vec2 fragCoord = UV*1024.;//TODO: fix this by getting the resolution
-	//fragCoord.y = 1024.-fragCoord.y;
 	COLOR = main(fragCoord);
 	COLOR.a = 1.;
 }

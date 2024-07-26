@@ -5,19 +5,14 @@ uniform sampler2D iChannel1;
 
 #include "RCcommon.gdshaderinc"
 
+//Port of "Radiance Cascades 2d Smooth WIP" by Suslik. https://www.shadertoy.com/view/mlSfRD
+
 // Fork of "Radiance Cascades" by fad. https://shadertoy.com/view/mtlBzX
 // 2023-09-02 14:11:55
-
-// Controls:
-// Click and drag with mouse to draw
-// Press space to toggle betweem emissive and non-emissive brush
-// Press 1 to switch to drawing a temporary light instead of permanent
 
 // A 2D implementation of 
 // Radiance Cascades: A Novel Approach to Calculating Global Illumination
 // https://drive.google.com/file/d/1L6v1_7HY2X-LV3Ofb6oyTIxgEaP4LOI6/view
-
-// You can set the parameters to the algorithm in the Common tab
 
 // Sky integral formula taken from
 // Analytic Direct Illumination - Mathis

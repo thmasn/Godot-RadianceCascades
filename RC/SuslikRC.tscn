@@ -1,14 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://c57jb4gxgipfq"]
+[gd_scene load_steps=14 format=3 uid="uid://c57jb4gxgipfq"]
 
 [ext_resource type="Shader" path="res://RC/CubeA.gdshader" id="1_den42"]
 [ext_resource type="Texture2D" uid="uid://bjy6qpc80f00n" path="res://RC/BufferB.exr" id="2_lnytk"]
 [ext_resource type="Texture2D" uid="uid://bi5drfmmhk5u4" path="res://RC/white.png" id="2_rtgj4"]
 [ext_resource type="Shader" path="res://RC/copyTexture.gdshader" id="3_brvd3"]
 [ext_resource type="Shader" path="res://RC/FinalImage.gdshader" id="5_pltci"]
-[ext_resource type="Texture2D" uid="uid://br15q4c1wrxxe" path="res://RC/cascadesRef.exr" id="6_y6v6o"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_8dijm"]
-viewport_path = NodePath("CubeAHistory")
+viewport_path = NodePath("cascasesVPLastFrame")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3bvde"]
 resource_local_to_scene = true
@@ -21,13 +20,13 @@ shader_parameter/iChannel1 = ExtResource("2_lnytk")
 shader = ExtResource("3_brvd3")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_3tl8m"]
-viewport_path = NodePath("CubeA")
+viewport_path = NodePath("cascadesVP")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_b66n5"]
-viewport_path = NodePath("CubeA")
+viewport_path = NodePath("cascadesVP")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_qhwm7"]
-viewport_path = NodePath("CubeA")
+viewport_path = NodePath("cascadesVP")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jytf7"]
 resource_local_to_scene = true
@@ -41,13 +40,13 @@ viewport_path = NodePath("finalImage")
 
 [node name="Node2D" type="Node2D"]
 
-[node name="CubeA" type="SubViewport" parent="."]
+[node name="cascadesVP" type="SubViewport" parent="."]
 disable_3d = true
 transparent_bg = true
 use_hdr_2d = true
 size = Vector2i(1024, 1024)
 
-[node name="TextureRect" type="TextureRect" parent="CubeA"]
+[node name="TextureRect" type="TextureRect" parent="cascadesVP"]
 material = SubResource("ShaderMaterial_3bvde")
 use_parent_material = true
 anchors_preset = 15
@@ -57,13 +56,13 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_rtgj4")
 
-[node name="CubeAHistory" type="SubViewport" parent="."]
+[node name="cascasesVPLastFrame" type="SubViewport" parent="."]
 disable_3d = true
 transparent_bg = true
 use_hdr_2d = true
 size = Vector2i(1024, 1024)
 
-[node name="TextureRect" type="TextureRect" parent="CubeAHistory"]
+[node name="TextureRect" type="TextureRect" parent="cascasesVPLastFrame"]
 material = SubResource("ShaderMaterial_nvdyb")
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,7 +71,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ViewportTexture_3tl8m")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="cascadesDisplay" type="Sprite2D" parent="."]
 position = Vector2(0, 544)
 texture = SubResource("ViewportTexture_b66n5")
 
@@ -90,24 +89,14 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_rtgj4")
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="finalImageDisplay" type="Sprite2D" parent="."]
 position = Vector2(1064, 347)
 texture = SubResource("ViewportTexture_kurut")
 
-[node name="Sprite2D3" type="Sprite2D" parent="."]
-position = Vector2(-1718, 459)
-scale = Vector2(0.524902, 0.524902)
-texture = ExtResource("6_y6v6o")
-
-[node name="Sprite2D4" type="Sprite2D" parent="."]
-position = Vector2(-913, 1238)
-scale = Vector2(0.524902, 0.524902)
-texture = ExtResource("2_lnytk")
-
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="InputDistanceMapDisplay" type="TextureRect" parent="."]
 modulate = Color(0.00784314, 0.00784314, 0.00784314, 1)
-offset_left = -541.0
-offset_top = 1145.0
-offset_right = 483.0
-offset_bottom = 1721.0
+offset_left = -1613.0
+offset_top = 61.0
+offset_right = -589.0
+offset_bottom = 637.0
 texture = ExtResource("2_lnytk")

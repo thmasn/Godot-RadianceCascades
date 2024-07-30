@@ -2,11 +2,11 @@
 uniform int iFrame = 0; //TODO: set
 
 // Spatial resolution of cascade 0
-const ivec2 c_sRes = ivec2(320, 180);
+const ivec2 c_sRes = ivec2(256, 128);
 // Number of directions in cascade 0
 const int c_dRes = 16;
 // Number of cascades all together
-const int nCascades = 4;
+const int nCascades = 6;
 // Length of ray interval for cascade 0 (measured in pixels)
 const float c_intervalLength = 7.0;
 // Length of transition area between cascade 0 and cascade 1

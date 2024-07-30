@@ -12,7 +12,6 @@ viewport_path = NodePath("cascasesVPLastFrame")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3bvde"]
 resource_local_to_scene = true
 shader = ExtResource("1_den42")
-shader_parameter/iFrame = 0
 shader_parameter/iChannel0 = SubResource("ViewportTexture_8dijm")
 shader_parameter/iChannel1 = ExtResource("2_lnytk")
 
@@ -31,7 +30,6 @@ viewport_path = NodePath("cascadesVP")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jytf7"]
 resource_local_to_scene = true
 shader = ExtResource("5_pltci")
-shader_parameter/iFrame = 0
 shader_parameter/iChannel0 = SubResource("ViewportTexture_qhwm7")
 shader_parameter/iChannel1 = ExtResource("2_lnytk")
 

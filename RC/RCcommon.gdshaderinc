@@ -1,24 +1,18 @@
-//godot things
-uniform int iFrame = 0; //TODO: set
-
 // Spatial resolution of cascade 0
-const ivec2 c_sRes = ivec2(256, 128);
+const ivec2 c_sRes = ivec2(320, 180);
 // Number of directions in cascade 0
 const int c_dRes = 16;
 // Number of cascades all together
-const int nCascades = 6;
+const int nCascades = 4;
 // Length of ray interval for cascade 0 (measured in pixels)
-const float c_intervalLength = 7.0;
+const float c_intervalLength = 7.0; //TODO: should be linked to resolution of cascade0
 // Length of transition area between cascade 0 and cascade 1
 const float c_smoothDistScale = 10.0;
-
-// Brush radius used for drawing, measured as fraction of iResolution.y
-const float brushRadius = 0.02;
 
 const float MAX_FLOAT = 3.402823466e+38;
 const float MAGIC = 1e25;
 
-const vec2 screenRes = vec2(1024, 576); //TODO: fixme!
+const vec2 screenRes = vec2(1024, 576); //TODO: actual resolution!
 
 vec4 cubemapFetch(sampler2D sampler, ivec2 P) {
 	// Look up a single texel in a cubemap

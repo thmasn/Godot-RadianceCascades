@@ -62,8 +62,6 @@ vec4 mainImage(vec2 fragCoord) {
 }
 
 void fragment() {
-	vec2 fragCoord = UV*screenRes;//TODO: fix this by getting the resolution
+	vec2 fragCoord = UV*screenRes;
 	COLOR = mainImage(fragCoord);
-	//COLOR.xy = UV;
-	//COLOR = vec4(1.,0.,0.,1.);
 }
